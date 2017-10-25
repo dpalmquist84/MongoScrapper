@@ -29,11 +29,13 @@ app.use(express.static("public"));
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/MongoScrapper", {
+mongoose.connect("mongodb://localhost/", {
   useMongoClient: true
 });
 
 // Routes
+
+
 
 // A GET route for scraping the echojs website
 app.get("/scrape", function(req, res) {
