@@ -1,3 +1,125 @@
+// var express = require("express");
+// var bodyParser = require("body-parser");
+// var logger = require("morgan");
+// var mongoose = require("mongoose");
+// var mongojs = require("mongojs");
+
+// // Our scraping tools
+// // Axios is a promised-based http library, similar to jQuery's Ajax method
+// // It works on the client and on the server
+// var axios = require("axios");
+// var cheerio = require("cheerio");
+// var request = require("request");
+
+// // Require all models
+// var db = require("./models");
+
+// var PORT = 3001;
+
+// // Initialize Express
+// var app = express();
+
+// // Configure middleware
+
+// // Use morgan logger for logging requests
+// app.use(logger("dev"));
+// // Use body-parser for handling form submissions
+// app.use(bodyParser.urlencoded({
+//   extended: false
+// }));
+// // Use express.static to serve the public folder as a static directory
+// app.use(express.static("public"));
+
+// // Set mongoose to leverage built in JavaScript ES6 Promises
+// // Connect to the Mongo DB
+// mongoose.Promise = Promise;
+// mongoose.connect("mongodb://localhost/scraper", {
+//   useMongoClient: true
+// });
+
+// // Routes
+
+
+
+
+
+
+// // First, tell the console what server.js is doing
+// console.log("\n***********************************\n" +
+//   "Grabbing every thread name and link\n" +
+//   "from NPR's front page:" +
+//   "\n***********************************\n");
+
+// var databaseUrl = "scraper";
+// var collections = ["scrapedData"];
+
+// // Hook mongojs configuration to the db variable
+// var db = mongojs(databaseUrl, collections);
+// db.on("error", function (error) {
+//   console.log("Database Error:", error);
+// });
+
+// // Scrape data from one site and place it into the mongodb db
+// // app.get("/", function (req, res) {
+// //   res.send("Hello world");
+// // });
+
+// // Retrieve data from the db
+// app.get("/all", function (req, res) {
+//   // Find all results from the scrapedData collection in the db
+//   db.scrapedData.find({}, function (error, found) {
+//     // Throw any errors to the console
+//     if (error) {
+//       console.log(error);
+//     }
+//     // If there are no errors, send the data to the browser as json
+//     else {
+//       res.json(found);
+//     }
+//   });
+// });
+// app.get("/scrape", function (req, res) {
+//   // Make a request for the news section of ycombinator
+//   request("http://npr.org/sections/news/", function (error, response, html) {
+//     // Load the html body from request into cheerio
+//     var $ = cheerio.load(html);
+    
+//     // For each element with a "title" class
+//     $("h2.title").each(function (i, element) {
+//       // Save the text and href of each link enclosed in the current element
+//       var title = $(element).children("a").text();
+//       var link = $(element).children("a").attr("href");
+
+//       // If this found element had both a title and a link
+//       if (title && link) {
+//         // Insert the data in the scrapedData db
+//         db.scrapedData.insert({
+//             title: title,
+//             link: link
+//           },
+//           function (err, inserted) {
+//             if (err) {
+//               // Log the error if one is encountered during the query
+//               console.log(err);
+//             } else {
+//               // Otherwise, log the inserted data
+//               console.log(inserted);
+//             }
+//           });
+//       }
+//     });
+//   });
+
+//   // Send a "Scrape Complete" message to the browser
+//   res.send("Scrape Complete");
+// });
+
+
+// // Listen on port 3000
+// app.listen(PORT, function () {
+//   console.log(`App running on port ${PORT}!`);
+// });
+
 var express = require("express");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
@@ -12,7 +134,7 @@ var cheerio = require("cheerio");
 // Require all models
 var db = require("./models");
 
-var PORT = 3000;
+var PORT = 3002;
 
 // Initialize Express
 var app = express();
@@ -29,13 +151,11 @@ app.use(express.static("public"));
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/", {
+mongoose.connect("mongodb://localhost/scraper", {
   useMongoClient: true
 });
 
 // Routes
-
-
 
 // A GET route for scraping the echojs website
 app.get("/scrape", function(req, res) {
@@ -45,7 +165,7 @@ app.get("/scrape", function(req, res) {
     var $ = cheerio.load(response.data);
 
     // Now, we grab every h2 within an article tag, and do the following:
-    $("title h2").each(function(i, element) {
+    $("h2.title").each(function(i, element) {
       // Save an empty result object
       var result = {};
 
