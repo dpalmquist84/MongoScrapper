@@ -1,0 +1,11 @@
+#npr {
+    background-image: url("http://mediad.publicbroadcasting.net/p/klcc/files/styles/large/public/201503/NPR2.jpg");
+    height: 310px;
+    background-repeat: no-repeat;
+}
+
+p {
+    border-style: solid;
+    border-size: 1px;
+
+}
